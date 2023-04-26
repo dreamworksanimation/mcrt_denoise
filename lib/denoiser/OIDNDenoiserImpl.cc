@@ -112,7 +112,7 @@ OIDNDenoiserImpl::denoise(const float *inputBeauty,
         output[i * 4] = mOutput3[i * 3];
         output[i * 4 + 1] = mOutput3[i * 3 + 1];
         output[i * 4 + 2] = mOutput3[i * 3 + 2];
-        output[i * 4 + 3] = 0.f;
+        output[i * 4 + 3] = inputBeauty[i * 4 + 3];
     }
 }
 
