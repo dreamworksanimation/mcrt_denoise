@@ -14,7 +14,7 @@ def version():
     """
     Increment the build in the version.
     """
-    _version = '3.1'
+    _version = '3.2'
     from rezbuild import earlybind
     return earlybind.version(this, _version)
 
@@ -68,7 +68,7 @@ requires = [
   'cuda-11.3.0.x',
   'openimagedenoise',
   'optix-7.3.0.x',
-  'scene_rdl2-12.1'
+  'scene_rdl2-12.2'
 ]
 
 private_build_requires = [
