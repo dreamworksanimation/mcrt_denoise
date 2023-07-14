@@ -65,8 +65,8 @@ sconsTargets = {
 }
 
 requires = [
-  'cuda-11.3.0.x',
-  'openimagedenoise',
+  'cuda-12.1.0.x',
+  'openimagedenoise-2.0.0.x',
   'optix-7.3.0.x',
   'scene_rdl2-12.5'
 ]
