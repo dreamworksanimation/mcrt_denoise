@@ -15,7 +15,8 @@ namespace denoiser {
 class OIDNDenoiserImpl : public DenoiserImpl
 {
 public:
-    OIDNDenoiserImpl(int width,
+    OIDNDenoiserImpl(OIDNDeviceType deviceType,
+                     int width,
                      int height,
                      bool useAlbedo,
                      bool useNormals,
@@ -29,13 +30,13 @@ public:
                  std::string* errorMsg) override;
 
 private:
+    OIDNDeviceType mDeviceType;
     OIDNDevice mDevice;
     OIDNFilter mFilter;
-
-    std::vector<float> mInputBeauty3;
-    std::vector<float> mInputAlbedo3;
-    std::vector<float> mInputNormals3;
-    std::vector<float> mOutput3;
+    OIDNBuffer mInputBeauty3;
+    OIDNBuffer mInputAlbedo3;
+    OIDNBuffer mInputNormals3;
+    OIDNBuffer mOutput3; 
 };
 
 } // namespace denoiser

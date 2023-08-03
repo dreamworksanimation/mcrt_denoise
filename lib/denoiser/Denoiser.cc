@@ -34,7 +34,28 @@ Denoiser::Denoiser(DenoiserMode mode,
         }
     break;
     case OPEN_IMAGE_DENOISE:
-        mImpl.reset(new OIDNDenoiserImpl(width, height, useAlbedo, useNormals, errorMsg));
+        mImpl.reset(new OIDNDenoiserImpl(OIDN_DEVICE_TYPE_DEFAULT, width, height, useAlbedo,
+                                         useNormals, errorMsg));
+        if (!errorMsg->empty()) {
+            // Something went wrong so free everything
+            // Output the error to Logger::error so we are guaranteed to see it
+            scene_rdl2::logging::Logger::error("Denoiser: " + *errorMsg);
+            mImpl.reset();
+        }
+    break;
+    case OPEN_IMAGE_DENOISE_CPU:
+        mImpl.reset(new OIDNDenoiserImpl(OIDN_DEVICE_TYPE_CPU, width, height, useAlbedo,
+                                         useNormals, errorMsg));
+        if (!errorMsg->empty()) {
+            // Something went wrong so free everything
+            // Output the error to Logger::error so we are guaranteed to see it
+            scene_rdl2::logging::Logger::error("Denoiser: " + *errorMsg);
+            mImpl.reset();
+        }
+    break;
+    case OPEN_IMAGE_DENOISE_CUDA:
+        mImpl.reset(new OIDNDenoiserImpl(OIDN_DEVICE_TYPE_CUDA, width, height, useAlbedo,
+                                         useNormals, errorMsg));
         if (!errorMsg->empty()) {
             // Something went wrong so free everything
             // Output the error to Logger::error so we are guaranteed to see it
@@ -110,13 +131,28 @@ Denoiser::Denoiser(DenoiserMode mode,
         scene_rdl2::logging::Logger::error("Denoiser: " + *errorMsg);
     break;
     case OPEN_IMAGE_DENOISE:
-        mImpl.reset(new OIDNDenoiserImpl(width, height, useAlbedo, useNormals, errorMsg));
+        mImpl.reset(new OIDNDenoiserImpl(OIDN_DEVICE_TYPE_DEFAULT, width, height, useAlbedo,
+                                         useNormals, errorMsg));
         if (!errorMsg->empty()) {
             // Something went wrong so free everything
             // Output the error to Logger::error so we are guaranteed to see it
             scene_rdl2::logging::Logger::error("Denoiser: " + *errorMsg);
             mImpl.reset();
         }
+    break;
+    case OPEN_IMAGE_DENOISE_CPU:
+        mImpl.reset(new OIDNDenoiserImpl(OIDN_DEVICE_TYPE_CPU, width, height, useAlbedo,
+                                         useNormals, errorMsg));
+        if (!errorMsg->empty()) {
+            // Something went wrong so free everything
+            // Output the error to Logger::error so we are guaranteed to see it
+            scene_rdl2::logging::Logger::error("Denoiser: " + *errorMsg);
+            mImpl.reset();
+        }
+    break;
+    case OPEN_IMAGE_DENOISE_CUDA:
+        *errorMsg = "Open Image Denoise CUDA mode not supported in this build";
+        scene_rdl2::logging::Logger::error("Denoiser: " + *errorMsg);
     break;
     };
 }
