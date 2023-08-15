@@ -9,10 +9,9 @@ include(CMakeFindDependencyMacro)
 
 find_dependency(OpenImageDenoise)
 find_dependency(SceneRdl2)
-if (${MOONRAY_USE_CUDA})
-    find_dependency(CUDAToolkit)
-    find_dependency(OptiX)
-endif()
+find_dependency(CUDAToolkit)
+find_dependency(OptiX)
+
 
 include("${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@Targets.cmake")
 
