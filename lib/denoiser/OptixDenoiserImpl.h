@@ -46,6 +46,7 @@ private:
     unsigned char* mDenoiserState;
     unsigned char* mScratch;
     OptixDenoiserParams mDenoiserParams;
+    OptixDenoiserOptions mDenoiserOptions;
     float* mDenoisedOutput;
     float* mInputBeauty;
     OptixDenoiserLayer mLayer;
