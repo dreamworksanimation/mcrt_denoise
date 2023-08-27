@@ -107,11 +107,13 @@ OptixDenoiserImpl::OptixDenoiserImpl(int width,
     }
 
     mDenoiserParams = {};                                              // zero initialize
-    mDenoiserParams.denoiseAlpha = OPTIX_DENOISER_ALPHA_MODE_COPY;     // don't denoise alpha
     mDenoiserParams.hdrIntensity = 0;                                  // optional average log intensity image of input image, 
                                                                        //  helps with very dark/bright images
     mDenoiserParams.blendFactor = 0.f;                                 // show the denoised image only
     mDenoiserParams.hdrAverageColor = 0;                               // used with OPTIX_DENOISER_MODEL_KIND_AOV
+    
+    // Don't denoise alpha
+    mDenoiserOptions.denoiseAlpha = OPTIX_DENOISER_ALPHA_MODE_COPY;
 
     if (cudaMalloc(&mDenoisedOutput, sizeof(float4) * mWidth * mHeight) != cudaSuccess) {
          *errorMsg = "Unable to allocate denoiser output buffer";
