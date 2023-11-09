@@ -107,7 +107,7 @@ OptixDenoiserImpl::OptixDenoiserImpl(int width,
     }
 
     mDenoiserParams = {};                 // zero initialize
-    mDenoiserParams.denoiseAlpha = 0;     // don't denoise alpha
+    mDenoiserParams.denoiseAlpha = OPTIX_DENOISER_ALPHA_MODE_COPY; // don't denoise alpha
     mDenoiserParams.hdrIntensity = 0;     // optional average log intensity image of input image, 
                                           //  helps with very dark/bright images
     mDenoiserParams.blendFactor = 0.f;    // show the denoised image only
