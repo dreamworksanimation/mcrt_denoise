@@ -4,7 +4,7 @@
 function(McrtDenoise_link_options target)
     target_link_options(${target}
         PRIVATE
-            -Wl,--enable-new-dtags              # Use RUNPATH instead of RPATH
+            ${GLOBAL_LINK_FLAGS}
     )
 endfunction()
 

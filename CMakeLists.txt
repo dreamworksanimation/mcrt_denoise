@@ -3,7 +3,7 @@
 
 cmake_minimum_required (VERSION 3.23.1)
 
-include(packageVersion)  # Sets versionString, projectString and PACKAGE_NAME
+include(OMR_PackageVersion)  # Sets versionString, projectString and PACKAGE_NAME
 project(${projectString}
     VERSION ${versionString}
     LANGUAGES CXX # CUDA
@@ -13,18 +13,23 @@ string(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UPPER)
 list(APPEND CMAKE_MESSAGE_CONTEXT ${PROJECT_NAME})
 list (APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
+include(OMR_Platform)
+
 # ================================================
 # Options
 # ================================================
-option(${PROJECT_NAME_UPPER}_BUILD_TESTING
-    "Whether or not to build the unittests" YES)
-option(MOONRAY_USE_CUDA
-    "Whether to use CUDA (and Optix) - Enables XPU mode and Optix denoising" YES)
+option(${PROJECT_NAME_UPPER}_BUILD_TESTING "Whether or not to build the unittests" YES)
+
+if(IsLinuxPlatform)
+    option(MOONRAY_USE_OPTIX "Whether to enable XPU mode and Optix denoising" YES)
+elseif(IsDarwinPlatform)
+    option(MOONRAY_USE_METAL "Whether to enable XPU mode and OIDN Metal denoising" YES)
+endif()
 
 # ================================================
 # Find dependencies
 # ================================================
-if (MOONRAY_USE_CUDA)
+if (MOONRAY_USE_OPTIX)
     find_package(CUDAToolkit REQUIRED) # built-in
     find_package(OptiX REQUIRED)
 endif()
@@ -37,12 +42,15 @@ endif()
 # ================================================
 # Set the RPATH for binaries in the install tree
 # ================================================
-if (NOT "" STREQUAL "$ENV{REZ_ICC_ROOT}")
-    set(COMPILER_LIBRARY_DIR "$ENV{REZ_ICC_ROOT}/lib")
-endif()
+set(CMAKE_INSTALL_RPATH ${GLOBAL_INSTALL_RPATH})
 
-set(CMAKE_BUILD_RPATH ${COMPILER_LIBRARY_DIR})
-set(CMAKE_INSTALL_RPATH $ORIGIN $ORIGIN/../lib64 ${COMPILER_LIBRARY_DIR})
+if (NOT IsDarwinPlatform)
+    if (NOT "" STREQUAL "$ENV{REZ_ICC_ROOT}")
+        set(COMPILER_LIBRARY_DIR "$ENV{REZ_ICC_ROOT}/lib")
+    endif()
+
+    set(CMAKE_BUILD_RPATH ${COMPILER_LIBRARY_DIR})
+endif()
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 # if OPT_LEVEL is set use its value to override the CMAKE_BUILD_TYPE because the

@@ -15,7 +15,7 @@ target_sources(${component}
         OIDNDenoiserImpl.cc
 )
 
-if (MOONRAY_USE_CUDA)
+if(MOONRAY_USE_OPTIX)
     target_sources(${component}
         PRIVATE
             OptixDenoiserImpl.cc
@@ -40,7 +40,7 @@ target_link_libraries(${component}
         OpenImageDenoise
 )
 
-if (MOONRAY_USE_CUDA)
+if(MOONRAY_USE_OPTIX)
     target_link_libraries(${component}
         PUBLIC
             CUDA::cudart
@@ -67,9 +67,12 @@ elseif(${MOONRAY_DENOISER_TARGET_ARCHITECTURE} MATCHES "^AVX$")
         PUBLIC __TARGET_AVX__ __AVX__)
 endif()
 
-if (MOONRAY_USE_CUDA)
+if(MOONRAY_USE_OPTIX)
     target_compile_definitions(${component}
-        PRIVATE MOONRAY_USE_CUDA)
+        PRIVATE MOONRAY_USE_OPTIX)
+elseif(MOONRAY_USE_METAL)
+    target_compile_definitions(${component}
+        PRIVATE MOONRAY_USE_METAL)
 endif()
 
 # -------------------------------------

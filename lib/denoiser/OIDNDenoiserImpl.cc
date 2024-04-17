@@ -32,6 +32,11 @@ OIDNDenoiserImpl::OIDNDenoiserImpl(OIDNDeviceType deviceType,
     case OIDN_DEVICE_TYPE_CUDA:
         scene_rdl2::logging::Logger::info("Creating Open Image Denoise denoiser (CUDA device)");
         break;
+#ifdef PLATFORM_APPLE
+    case OIDN_DEVICE_TYPE_METAL:
+        scene_rdl2::logging::Logger::info("Creating Open Image Denoise denoiser (METAL device)");
+        break;
+#endif
     default:
         scene_rdl2::logging::Logger::info("Creating Open Image Denoise denoiser (unknown device)");
     }
@@ -96,6 +101,11 @@ OIDNDenoiserImpl::~OIDNDenoiserImpl()
     case OIDN_DEVICE_TYPE_CUDA:
         scene_rdl2::logging::Logger::info("Freeing Open Image Denoise denoiser (CUDA device)");
         break;
+#ifdef PLATFORM_APPLE
+    case OIDN_DEVICE_TYPE_METAL:
+        scene_rdl2::logging::Logger::info("Creating Open Image Denoise denoiser (METAL device)");
+        break;
+#endif
     default:
         scene_rdl2::logging::Logger::info("Freeing Open Image Denoise denoiser (unknown device)");
     }

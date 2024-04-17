@@ -10,7 +10,7 @@ include(CMakeFindDependencyMacro)
 find_dependency(OpenImageDenoise)
 find_dependency(SceneRdl2)
 
-if (NOT DEFINED MOONRAY_USE_CUDA OR "${MOONRAY_USE_CUDA}")
+if(MOONRAY_USE_OPTIX)
     find_dependency(CUDAToolkit)
     find_dependency(OptiX)
 endif()

@@ -17,6 +17,7 @@ class DenoiserImpl;
 enum DenoiserMode
 {
     OPTIX,
+    METAL,
     OPEN_IMAGE_DENOISE,
     OPEN_IMAGE_DENOISE_CPU,
     OPEN_IMAGE_DENOISE_CUDA

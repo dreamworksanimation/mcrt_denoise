@@ -1,7 +1,7 @@
 // Copyright 2023-2024 DreamWorks Animation LLC
 // SPDX-License-Identifier: Apache-2.0
 
-#ifdef MOONRAY_USE_CUDA
+#ifdef MOONRAY_USE_OPTIX
 
 #include "OIDNDenoiserImpl.h"
 #include "OptixDenoiserImpl.h"
@@ -53,6 +53,18 @@ Denoiser::Denoiser(DenoiserMode mode,
             mImpl.reset();
         }
     break;
+#ifdef PLATFORM_APPLE
+    case OIDN_DEVICE_TYPE_METAL:
+        mImpl.reset(new OIDNDenoiserImpl(OIDN_DEVICE_TYPE_METAL, width, height, useAlbedo,
+                                         useNormals, errorMsg));
+        if (!errorMsg->empty()) {
+            // Something went wrong so free everything
+            // Output the error to Logger::error so we are guaranteed to see it
+            scene_rdl2::logging::Logger::error("Denoiser: " + *errorMsg);
+            mImpl.reset();
+        }
+    break;
+#endif
     case OPEN_IMAGE_DENOISE_CUDA:
         mImpl.reset(new OIDNDenoiserImpl(OIDN_DEVICE_TYPE_CUDA, width, height, useAlbedo,
                                          useNormals, errorMsg));
@@ -107,7 +119,7 @@ Denoiser::useNormals() const
 } // namespace denoiser
 } // namespace moonray
 
-#else // not MOONRAY_USE_CUDA
+#else // not MOONRAY_USE_OPTIX
 
 #include "OIDNDenoiserImpl.h"
 #include "Denoiser.h"
@@ -130,6 +142,18 @@ Denoiser::Denoiser(DenoiserMode mode,
         *errorMsg = "Optix mode not supported in this build";
         scene_rdl2::logging::Logger::error("Denoiser: " + *errorMsg);
     break;
+#ifdef PLATFORM_APPLE
+    case METAL:
+        mImpl.reset(new OIDNDenoiserImpl(OIDN_DEVICE_TYPE_METAL, width, height, useAlbedo,
+                                             useNormals, errorMsg));
+        if (!errorMsg->empty()) {
+                // Something went wrong so free everything
+                // Output the error to Logger::error so we are guaranteed to see it
+                scene_rdl2::logging::Logger::error("Denoiser: " + *errorMsg);
+                mImpl.reset();
+        }
+    break;
+#endif
     case OPEN_IMAGE_DENOISE:
         mImpl.reset(new OIDNDenoiserImpl(OIDN_DEVICE_TYPE_DEFAULT, width, height, useAlbedo,
                                          useNormals, errorMsg));
@@ -161,7 +185,7 @@ Denoiser::~Denoiser()
 {
 }
 
-void 
+void
 Denoiser::denoise(const float *inputBeauty,
                   const float *inputAlbedo,
                   const float *inputNormals,
@@ -171,13 +195,13 @@ Denoiser::denoise(const float *inputBeauty,
     mImpl->denoise(inputBeauty, inputAlbedo, inputNormals, output, errorMsg);
 }
 
-int 
+int
 Denoiser::imageWidth() const
 {
     return mImpl->imageWidth();
 }
 
-int 
+int
 Denoiser::imageHeight() const
 {
     return mImpl->imageHeight();
@@ -198,4 +222,4 @@ Denoiser::useNormals() const
 } // namespace denoiser
 } // namespace moonray
 
-#endif // not MOONRAY_USE_CUDA
+#endif // MOONRAY_USE_OPTIX
