@@ -20,12 +20,6 @@ include(OMR_Platform)
 # ================================================
 option(${PROJECT_NAME_UPPER}_BUILD_TESTING "Whether or not to build the unittests" YES)
 
-if(IsLinuxPlatform)
-    option(MOONRAY_USE_OPTIX "Whether to enable XPU mode and Optix denoising" YES)
-elseif(IsDarwinPlatform)
-    option(MOONRAY_USE_METAL "Whether to enable XPU mode and OIDN Metal denoising" YES)
-endif()
-
 # ================================================
 # Find dependencies
 # ================================================
