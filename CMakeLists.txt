@@ -33,9 +33,7 @@ if("${PROJECT_NAME}" STREQUAL "${CMAKE_PROJECT_NAME}")
     find_package(SceneRdl2 REQUIRED)
 endif()
 
-# ================================================
 # Set the RPATH for binaries in the install tree
-# ================================================
 set(CMAKE_INSTALL_RPATH ${GLOBAL_INSTALL_RPATH})
 
 if (NOT IsDarwinPlatform)
