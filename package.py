@@ -50,7 +50,7 @@ variants = [
 ]
 
 conf_rats_variants = variants[0:2]
-conf_CI_variants = list(filter(lambda v: 'os-CentOS-7' in v, variants))
+conf_CI_variants = variants
 
 requires = [
   'cuda-12.1.0.x',
