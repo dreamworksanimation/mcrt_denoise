@@ -47,7 +47,7 @@ conf_CI_variants = variants
 
 requires = [
   'cuda-12.1.0.x',
-  'openimagedenoise-2.0.0.x',
+  'openimagedenoise-2.3.2.x',
   'optix-7.6.0.x',
   'scene_rdl2-15.9'
 ]
