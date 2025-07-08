@@ -17,7 +17,7 @@ def version():
     """
     Increment the build in the version.
     """
-    _version = '6.9'
+    _version = '6.10'
     from rezbuild import earlybind
     return earlybind.version(this, _version)
 
