@@ -65,6 +65,12 @@ variants = [
     [   # variant 5
         'os-rocky-9',
         'opt_level-optdebug',
+        'refplat-houdini21.0',
+        'gcc-11.x'
+    ],
+    [   # variant 6
+        'os-rocky-9',
+        'opt_level-optdebug',
         'refplat-vfx2022.0',
         'gcc-9.3.x.1'
     ],
@@ -79,7 +85,7 @@ for i, variant in enumerate(variants):
 
 requires = [
   'cuda-12.1.0.x',
-  'openimagedenoise-2.3.2.x',
+  'openimagedenoise-2.3.3.x',
   'optix-7.6.0.x',
   'scene_rdl2-15.15'
 ]
