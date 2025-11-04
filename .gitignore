@@ -60,3 +60,6 @@ profiling/profiles/
 /boot
 /site_scons
 /bamboo_tools
+
+# gha created files
+.ci_githooks
