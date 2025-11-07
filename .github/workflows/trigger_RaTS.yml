@@ -2,15 +2,16 @@ name: Trigger the RaTS Plan Run
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - '**.md'
-      - '.github/**'
-      - 'flowpipeline.yaml'
-      - 'LICENSE'
-      - 'tsc/**'
+  # push:
+  #   branches:
+  #     - main
+  #   paths-ignore:
+  #     - '**.md'
+  #     - '.github/**'
+  #     - 'flowpipeline.yaml'
+  #     - 'LICENSE'
+  #     - tests/rats/**
+  #     - 'tsc/**'
 
 jobs:
   trigger_RaTS_plan:
@@ -29,7 +30,7 @@ jobs:
           token: ${{ secrets.BART_TOKEN }}
       - name: Update File
         run: echo $(date) > ${FILENAME}
-      - name: Commit and Push         
+      - name: Commit and Push
         run: |
           git add ${FILENAME}
           git commit -m 'New triggered run.'
